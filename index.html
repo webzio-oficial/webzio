@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Webzio — Desarrollo Web & E-commerce </title>
+
+<!-- SEO -->
+<meta name="description" content="Webzio: diseño y desarrollo de páginas web, tiendas online y e-commerce en Barranquilla, Colombia. Resultados reales para tu negocio. Cotiza gratis."/>
+<meta name="keywords" content="desarrollo web Barranquilla, páginas web Colombia, e-commerce, tienda online, diseño web, React, WordPress, Webzio"/>
+<meta name="author" content="Webzio"/>
+<link rel="canonical" href="https://webzio.co"/>
+
+<!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://webzio.co"/>
+<meta property="og:title" content="Webzio — Desarrollo Web & E-commerce en Cartagena"/>
+<meta property="og:description" content="Diseñamos y desarrollamos páginas web y tiendas online que no solo se ven bien — generan resultados reales para tu negocio."/>
+<meta property="og:image" content="https://webzio.co/og-image.png"/>
+<meta property="og:locale" content="es_CO"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Webzio — Desarrollo Web & E-commerce en Cartagena"/>
+<meta name="twitter:description" content="Diseñamos y desarrollamos páginas web y tiendas online que generan resultados reales."/>
+<meta name="twitter:image" content="https://webzio.co/og-image.png"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --blue: #1A6FFF;
+    --blue-light: #5A9FFF;
+    --blue-dim: rgba(26,111,255,0.12);
+    --night: #0A0F1E;
+    --night2: #0e1528;
+    --night3: #131d35;
+    --text: #e8eeff;
+    --muted: #6a7fa8;
+    --border: rgba(90,159,255,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--night);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 6vw;
+    background: rgba(10,15,30,0.8);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo svg { width: 36px; height: 36px; }
+  .nav-wordmark {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+  .nav-wordmark span { color: var(--blue); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--blue); color: #fff;
+    padding: 10px 22px; border-radius: 8px;
+    font-size: 14px; font-weight: 500;
+    text-decoration: none;
+    transition: opacity .2s;
+  }
+  .nav-cta:hover { opacity: .85; }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 120px 6vw 80px;
+    text-align: center;
+    overflow: hidden;
+  }
+  #particles-canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(26,111,255,0.15) 0%, transparent 65%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -55%);
+    pointer-events: none; z-index: 0;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(90,159,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(90,159,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent);
+    pointer-events: none; z-index: 0;
+  }
+  #hero > *:not(#particles-canvas):not(.hero-glow):not(.hero-grid) {
+    position: relative; z-index: 2;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue-dim);
+    border: 1px solid rgba(26,111,255,0.3);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 13px; color: var(--blue-light);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp .6s .2s ease forwards;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--blue);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+  h1.hero-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(15px, 1.6vw, 22px);
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp .7s .65s ease forwards;
+    text-align: center;
+  }
+  h1.hero-tagline .accent { color: #e8eeff; font-weight: 400; }
+
+  .hero-icon-wrap {
+    margin-bottom: 14px;
+    opacity: 0;
+    animation: fadeUp .6s .25s ease forwards;
+  }
+  .hero-icon-wrap svg { width: 48px; height: 48px; }
+
+  .hero-wordmark-big {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(64px, 11vw, 120px);
+    letter-spacing: -4px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 18px;
+    opacity: 0;
+    animation: fadeUp .7s .4s ease forwards;
+  }
+  .hero-wordmark-big span { color: var(--blue); }
+
+  .hero-sub {
+    display: none;
+  }
+  .hero-actions {
+    margin-top: 32px;
+    display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeUp .7s .82s ease forwards;
+  }
+  .btn-primary {
+    background: var(--blue); color: #fff;
+    padding: 14px 30px; border-radius: 10px;
+    font-size: 15px; font-weight: 500;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 0 30px rgba(26,111,255,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 40px rgba(26,111,255,0.5); }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    padding: 14px 30px; border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 15px; font-weight: 500;
+    text-decoration: none;
+    transition: border-color .2s, background .2s;
+  }
+  .btn-ghost:hover { border-color: rgba(90,159,255,0.4); background: var(--blue-dim); }
+
+  .hero-stats {
+    margin-top: 60px;
+    display: flex; gap: 48px; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeUp .7s 1.05s ease forwards;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px; font-weight: 800;
+    color: var(--text);
+  }
+  .stat-num span { color: var(--blue); }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative; z-index: 1;
+    padding: 100px 6vw;
+  }
+  .section-label {
+    font-size: 12px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: .15em;
+    color: var(--blue); margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    max-width: 600px;
+  }
+  .section-sub {
+    margin-top: 16px;
+    color: var(--muted); font-size: 17px;
+    max-width: 480px; line-height: 1.7; font-weight: 300;
+  }
+
+  /* ── SERVICES ── */
+  #servicios { background: var(--night2); }
+  .services-header { margin-bottom: 60px; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .service-card {
+    background: var(--night);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    transition: border-color .3s, transform .3s;
+    cursor: default;
+  }
+  .service-card:hover {
+    border-color: rgba(26,111,255,0.4);
+    transform: translateY(-4px);
+  }
+  .service-icon {
+    width: 48px; height: 48px;
+    background: var(--blue-dim);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .service-icon svg { width: 24px; height: 24px; stroke: var(--blue); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .service-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 10px; letter-spacing: -.3px;
+  }
+  .service-card p { color: var(--muted); font-size: 15px; line-height: 1.7; font-weight: 300; }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .tag {
+    font-size: 11px; font-weight: 500;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--blue-dim);
+    color: var(--blue-light);
+    border: 1px solid rgba(26,111,255,0.2);
+  }
+
+  /* ── PROYECTOS ── */
+  #proyectos { background: var(--night); }
+  .projects-grid {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .project-card {
+    background: var(--night3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform .3s, border-color .3s;
+  }
+  .project-card:hover { transform: translateY(-5px); border-color: rgba(26,111,255,0.35); }
+  .project-thumb {
+    height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    position: relative; overflow: hidden;
+  }
+  .project-thumb .mock-browser {
+    width: 85%; background: var(--night2);
+    border-radius: 8px; border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .mock-bar {
+    height: 24px; background: var(--night);
+    display: flex; align-items: center; gap: 5px;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mock-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .mock-content { height: 100px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .mock-line { height: 8px; border-radius: 4px; background: var(--border); }
+  .project-info { padding: 22px; }
+  .project-info h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .project-info p { color: var(--muted); font-size: 14px; line-height: 1.6; font-weight: 300; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+
+  /* ── SOBRE MÍ ── */
+  #sobre { background: var(--night2); }
+  .sobre-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .sobre-avatar {
+    width: 100%; aspect-ratio: 1;
+    max-width: 400px;
+    border-radius: 20px;
+    background: var(--night3);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .sobre-avatar::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(26,111,255,0.15), transparent 60%);
+  }
+  .avatar-initials {
+    font-family: 'Syne', sans-serif;
+    font-size: 80px; font-weight: 800;
+    color: var(--blue); opacity: .4;
+    z-index: 1;
+  }
+  .sobre-text .section-title { max-width: 100%; }
+  .sobre-text p {
+    margin-top: 20px;
+    color: var(--muted); font-size: 16px;
+    line-height: 1.8; font-weight: 300;
+  }
+  .skills-list {
+    margin-top: 30px;
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .skill-pill {
+    padding: 8px 16px; border-radius: 999px;
+    background: var(--night);
+    border: 1px solid var(--border);
+    font-size: 13px; color: var(--text); font-weight: 500;
+  }
+
+  /* ── CONTACTO ── */
+  #contacto { background: var(--night); }
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .contact-info p { color: var(--muted); font-size: 16px; line-height: 1.8; font-weight: 300; margin-top: 16px; }
+  .contact-detail {
+    margin-top: 36px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .contact-item-icon {
+    width: 40px; height: 40px;
+    background: var(--blue-dim);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-item-icon svg { width: 18px; height: 18px; stroke: var(--blue); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+  .contact-item-text { font-size: 15px; color: var(--text); }
+  .contact-item-text small { display: block; font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+
+  /* Form */
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group label { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--night2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    transition: border-color .2s;
+    outline: none;
+    resize: vertical;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--blue); }
+  .form-group select option { background: var(--night2); }
+  .form-submit {
+    background: var(--blue); color: #fff;
+    border: none; border-radius: 10px;
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    cursor: pointer;
+    transition: opacity .2s, transform .2s;
+    box-shadow: 0 0 28px rgba(26,111,255,0.3);
+  }
+  .form-submit:hover { opacity: .85; transform: translateY(-1px); }
+  .form-note { font-size: 12px; color: var(--muted); text-align: center; }
+
+  /* Success message */
+  .form-success {
+    display: none;
+    text-align: center; padding: 40px 20px;
+    background: rgba(26,111,255,0.08);
+    border: 1px solid rgba(26,111,255,0.3);
+    border-radius: 16px;
+  }
+  .form-success h3 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+  .form-success p { color: var(--muted); }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    padding: 40px 6vw;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer p { font-size: 13px; color: var(--muted); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--text); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 5vw; }
+    .nav-links { display: none; }
+    section { padding: 70px 5vw; }
+    .sobre-inner,
+    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    .sobre-avatar { max-width: 200px; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-stats { gap: 28px; }
+  }
+
+  /* ── WHATSAPP FLOTANTE ── */
+  .wa-float {
+    position: fixed; bottom: 28px; right: 28px; z-index: 999;
+    width: 56px; height: 56px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 24px rgba(37,211,102,0.45);
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    animation: waPop .5s 2s ease both;
+  }
+  .wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 32px rgba(37,211,102,0.6); }
+  .wa-float svg { width: 30px; height: 30px; fill: white; }
+  .wa-tooltip {
+    position: absolute; right: 66px; bottom: 50%;
+    transform: translateY(50%);
+    background: #fff; color: #111;
+    font-size: 13px; font-weight: 500;
+    padding: 7px 14px; border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s;
+  }
+  .wa-tooltip::after {
+    content: '';
+    position: absolute; right: -6px; top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-right: none;
+    border-left-color: #fff;
+  }
+  .wa-float:hover .wa-tooltip { opacity: 1; }
+  @keyframes waPop {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="3,7 9,27 18,14 27,27 33,7" stroke="#1A6FFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="18" cy="14" r="4.5" fill="#1A6FFF"/>
+      <circle cx="18" cy="14" r="2.2" fill="white"/>
+      <circle cx="3"  cy="7"  r="2"   fill="#1A6FFF" opacity="0.5"/>
+      <circle cx="33" cy="7"  r="2"   fill="#1A6FFF" opacity="0.5"/>
+    </svg>
+    <span class="nav-wordmark">web<span>zio</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#proyectos">Proyectos</a></li>
+    <li><a href="#sobre">Nosotros</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a class="nav-cta" href="#contacto">Hablemos →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">Desarrollo web · Páginas web · E-commerce ·</div>
+
+  <div class="hero-icon-wrap">
+    <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="4,10 13,40 26,20 39,40 48,10" stroke="#1A6FFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="26" cy="20" r="7" fill="#1A6FFF"/>
+      <circle cx="26" cy="20" r="3.5" fill="white"/>
+      <circle cx="4"  cy="10" r="3" fill="#1A6FFF" opacity="0.5"/>
+      <circle cx="48" cy="10" r="3" fill="#1A6FFF" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <div class="hero-wordmark-big">web<span>zio</span></div>
+
+  <h1 class="hero-tagline">Tu negocio merece una web que <span class="accent">trabaje por ti.</span></h1>
+
+  <div class="hero-actions">
+    <a class="btn-primary" href="#contacto">Quiero mi web →</a>
+    <a class="btn-ghost" href="#proyectos">Ver proyectos</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">3<span>+</span></div>
+      <div class="stat-label">Proyectos entregados</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100<span>%</span></div>
+      <div class="stat-label">Clientes satisfechos</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">48<span>h</span></div>
+      <div class="stat-label">Tiempo de respuesta</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="services-header">
+    <p class="section-label">Lo que hacemos</p>
+    <h2 class="section-title">Soluciones web a tu medida</h2>
+    <p class="section-sub">Desde una landing page hasta una tienda online completa — construimos exactamente lo que tu negocio necesita.</p>
+  </div>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <h3>Páginas web</h3>
+      <p>Landing pages y sitios corporativos diseñados para captar clientes, transmitir confianza y destacar entre la competencia.</p>
+      <div class="service-tags">
+        <span class="tag">HTML/CSS</span>
+        <span class="tag">React</span>
+        <span class="tag">Webflow</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <h3>E-commerce</h3>
+      <p>Tiendas online listas para vender, con pasarela de pagos, gestión de inventario y experiencia de compra optimizada.</p>
+      <div class="service-tags">
+        <span class="tag">Shopify</span>
+        <span class="tag">WooCommerce</span>
+        <span class="tag">Stripe</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <h3>Desarrollo a medida</h3>
+      <p>Funcionalidades específicas, integraciones con APIs y soluciones personalizadas para automatizar procesos de tu negocio.</p>
+      <div class="service-tags">
+        <span class="tag">Node.js</span>
+        <span class="tag">APIs REST</span>
+        <span class="tag">Bases de datos</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Mantenimiento & soporte</h3>
+      <p>Tu sitio siempre actualizado, seguro y funcionando. Soporte continuo para que nunca pierdas ventas por problemas técnicos.</p>
+      <div class="service-tags">
+        <span class="tag">Hosting</span>
+        <span class="tag">SSL</span>
+        <span class="tag">Actualizaciones</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROYECTOS -->
+<section id="proyectos">
+  <p class="section-label">Nuestro trabajo</p>
+  <h2 class="section-title">Proyectos recientes</h2>
+  <p class="section-sub">Cada proyecto es una solución única construida con atención al detalle.</p>
+
+  <div class="projects-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+
+    <div class="project-card">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#060d1a,#0a1930); height:200px; display:flex; align-items:center; justify-content:center; padding: 20px; position:relative; overflow:hidden;">
+        <!-- Decorative grid -->
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(26,111,255,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(26,111,255,0.07) 1px,transparent 1px);background-size:30px 30px;"></div>
+        <!-- Browser mockup -->
+        <div style="position:relative;z-index:1;width:90%;background:#0d1f3c;border-radius:10px;border:1px solid rgba(26,111,255,0.3);overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+          <div style="height:28px;background:#060f1e;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid rgba(26,111,255,0.2);">
+            <div style="width:8px;height:8px;border-radius:50%;background:#ff5f57;"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:#febc2e;"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:#28c840;"></div>
+            <div style="flex:1;height:14px;background:#0d1f3c;border-radius:4px;margin-left:8px;display:flex;align-items:center;padding:0 8px;">
+              <div style="width:4px;height:4px;border-radius:50%;background:#1A6FFF;margin-right:5px;"></div>
+              <div style="height:5px;width:60%;background:rgba(26,111,255,0.3);border-radius:2px;"></div>
+            </div>
+          </div>
+          <div style="padding:12px;display:flex;flex-direction:column;gap:7px;">
+            <div style="height:10px;width:50%;background:linear-gradient(90deg,#1A6FFF,#5A9FFF);border-radius:3px;"></div>
+            <div style="height:7px;width:90%;background:rgba(255,255,255,0.08);border-radius:2px;"></div>
+            <div style="height:7px;width:70%;background:rgba(255,255,255,0.06);border-radius:2px;"></div>
+            <div style="display:flex;gap:6px;margin-top:4px;">
+              <div style="height:22px;width:80px;background:#1A6FFF;border-radius:4px;opacity:.8;"></div>
+              <div style="height:22px;width:80px;background:rgba(26,111,255,0.2);border-radius:4px;border:1px solid rgba(26,111,255,0.3);"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Shield icon -->
+        <div style="position:absolute;right:18px;bottom:14px;width:36px;height:36px;background:rgba(26,111,255,0.15);border:1px solid rgba(26,111,255,0.3);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5A9FFF" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+      </div>
+      <div class="project-info">
+        <h3>Portafolio Cybersecurity Developer</h3>
+        <p>Sitio web personal para profesional en ciberseguridad — diseño oscuro, presentación de habilidades, proyectos y contacto.</p>
+        <div class="project-tech">
+          <span class="tag">React</span>
+          <span class="tag">Vercel</span>
+          <span class="tag">UI/UX</span>
+        </div>
+        <a href="https://yormandiazcybersecuritydeveloper.vercel.app/" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:13px;color:var(--blue-light);text-decoration:none;font-weight:500;transition:color .2s;"
+           onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--blue-light)'">
+          Ver sitio en vivo ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#04120a,#071a0f); height:200px; display:flex; align-items:center; justify-content:center; padding:20px; position:relative; overflow:hidden;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(16,200,90,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(16,200,90,0.06) 1px,transparent 1px);background-size:30px 30px;"></div>
+        <div style="position:relative;z-index:1;width:90%;background:#071a0f;border-radius:10px;border:1px solid rgba(16,200,90,0.25);overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+          <div style="height:28px;background:#040d07;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid rgba(16,200,90,0.15);">
+            <div style="width:8px;height:8px;border-radius:50%;background:#ff5f57;"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:#febc2e;"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:#28c840;"></div>
+            <div style="flex:1;height:14px;background:#071a0f;border-radius:4px;margin-left:8px;display:flex;align-items:center;padding:0 8px;">
+              <div style="width:4px;height:4px;border-radius:50%;background:#10c85a;margin-right:5px;"></div>
+              <div style="height:5px;width:60%;background:rgba(16,200,90,0.25);border-radius:2px;"></div>
+            </div>
+          </div>
+          <div style="padding:12px;display:flex;flex-direction:column;gap:7px;">
+            <div style="height:10px;width:55%;background:linear-gradient(90deg,#10c85a,#5de89a);border-radius:3px;"></div>
+            <div style="height:7px;width:90%;background:rgba(255,255,255,0.06);border-radius:2px;"></div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+              <div style="flex:1;height:32px;background:rgba(16,200,90,0.12);border:1px solid rgba(16,200,90,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+                <div style="width:60%;height:6px;background:rgba(16,200,90,0.4);border-radius:2px;"></div>
+              </div>
+              <div style="flex:1;height:32px;background:rgba(16,200,90,0.12);border:1px solid rgba(16,200,90,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+                <div style="width:60%;height:6px;background:rgba(16,200,90,0.4);border-radius:2px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;right:18px;bottom:14px;width:36px;height:36px;background:rgba(16,200,90,0.1);border:1px solid rgba(16,200,90,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10c85a" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+      </div>
+      <div class="project-info">
+        <h3>Vidiam Scanner</h3>
+        <p>Aplicación web de escaneo y análisis de vulnerabilidades — interfaz limpia, resultados en tiempo real y reportes detallados.</p>
+        <div class="project-tech">
+          <span class="tag">Next.js</span>
+          <span class="tag">Vercel</span>
+          <span class="tag">Seguridad</span>
+        </div>
+        <a href="https://vidiam-scanner-x2vn.vercel.app/" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:13px;color:var(--blue-light);text-decoration:none;font-weight:500;transition:color .2s;"
+           onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--blue-light)'">
+          Ver sitio en vivo ↗
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="margin-top:40px; text-align:center; font-size:14px; color:var(--muted);">
+    ¿Quieres que tu proyecto sea el próximo?
+    <a href="#contacto" style="color:var(--blue-light); text-decoration:none; font-weight:500; margin-left:4px;">Hablemos →</a>
+  </p>
+</section>
+
+<!-- SOBRE MÍ -->
+<section id="sobre">
+  <div class="sobre-inner">
+    <div class="sobre-avatar">
+      <div class="avatar-initials">W</div>
+    </div>
+    <div class="sobre-text">
+      <p class="section-label">Quiénes somos</p>
+      <h2 class="section-title">Tecnología con propósito</h2>
+      <p>Somos Webzio, una empresa de desarrollo web nacida en Barranquilla con el objetivo de conectar negocios colombianos con la tecnología que merecen — sin complicaciones y con resultados reales.</p>
+      <p style="margin-top:12px;">Nos especializamos en construir presencias digitales que no solo se ven profesionales, sino que trabajan para ti todos los días: atrayendo clientes, generando confianza y facilitando ventas.</p>
+      <div class="skills-list">
+        <span class="skill-pill">Diseño web</span>
+        <span class="skill-pill">E-commerce</span>
+        <span class="skill-pill">React / Next.js</span>
+        <span class="skill-pill">WordPress</span>
+        <span class="skill-pill">SEO</span>
+        <span class="skill-pill">UI/UX</span>
+        <span class="skill-pill">APIs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <p class="section-label">Contáctanos</p>
+      <h2 class="section-title">¿Tienes un proyecto en mente?</h2>
+      <p>Cuéntanos tu idea y te enviamos una propuesta personalizada en menos de 48 horas. Sin compromiso.</p>
+      <div class="contact-detail">
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <small>Ubicación</small>
+            Barranquilla, Colombia
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <small>Email</small>
+            <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#111;&#119;&#101;&#98;&#122;&#105;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;" style="color:var(--blue-light);text-decoration:none;">&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#111;&#119;&#101;&#98;&#122;&#105;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <small>WhatsApp</small>
+            <a href="https://wa.me/573017614370?text=Hola%20Webzio%2C%20quiero%20cotizar%20un%20proyecto%20web" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">+57 301 761 4370</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- Formulario Formspree — envío directo sin JavaScript -->
+      <form class="contact-form" id="contactForm"
+            action="https://formspree.io/f/xjgalvzz"
+            method="POST">
+        <input type="hidden" name="_subject" value="Nuevo contacto desde Webzio"/>
+        <input type="hidden" name="_next" value="https://webzio-black.vercel.app/#contacto"/>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" name="name" placeholder="Tu nombre" required/>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" placeholder="tu@email.com" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Empresa / Negocio</label>
+          <input type="text" name="empresa" placeholder="Nombre de tu empresa (opcional)"/>
+        </div>
+        <div class="form-group">
+          <label>¿Qué necesitas?</label>
+          <select name="servicio">
+            <option value="" disabled selected>Selecciona un servicio</option>
+            <option>Página web / Landing page</option>
+            <option>Tienda online / E-commerce</option>
+            <option>Desarrollo a medida</option>
+            <option>Mantenimiento de sitio existente</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Cuéntanos tu proyecto *</label>
+          <textarea name="mensaje" rows="4" placeholder="Describe brevemente qué quieres lograr con tu sitio web..." required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Enviar solicitud →</button>
+        <p class="form-note">Te respondemos en menos de 48 horas. Sin spam.</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h3>¡Mensaje recibido! 🎉</h3>
+        <p>Gracias por contactarnos. Te responderemos en menos de 48 horas con una propuesta personalizada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Webzio.</p>
+  <div class="footer-links">
+    <a href="#servicios">Servicios</a>
+    <a href="#proyectos">Proyectos</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOTANTE -->
+<a class="wa-float"
+   href="https://wa.me/573017614370?text=Hola%20Webzio%2C%20quiero%20cotizar%20un%20proyecto%20web"
+   target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <span class="wa-tooltip">¿Hablamos? 💬</span>
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.472 2.027 7.773L0 32l8.476-2.004A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.078 22.52c-.337.944-1.97 1.807-2.71 1.921-.69.107-1.563.152-2.52-.158a22.92 22.92 0 01-2.28-.843C12.18 21.8 9.5 18.5 9.3 18.24c-.2-.26-1.62-2.16-1.62-4.12s1.03-2.92 1.4-3.32c.37-.4.8-.5 1.07-.5.27 0 .54.003.77.013.25.012.58-.094.91.695.34.81 1.15 2.8 1.25 3 .1.2.17.44.03.7-.13.26-.2.42-.39.65-.2.23-.42.52-.6.7-.2.2-.4.41-.17.8.23.4.99 1.63 2.12 2.64 1.46 1.3 2.69 1.7 3.07 1.89.38.2.6.17.82-.1.22-.27.96-1.12 1.22-1.5.26-.38.51-.32.86-.19.35.13 2.2 1.04 2.58 1.23.38.19.63.28.72.44.1.16.1.93-.23 1.87z"/>
+  </svg>
+</a>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── PARTICLES ──
+(function() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], mouse = { x: -999, y: -999 };
+  const COUNT = 85;
+  const BLUE = '26,111,255';
+  const LBLUE = '90,159,255';
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function spawn() {
+    return {
+      x: rand(0, W), y: rand(0, H),
+      vx: rand(-0.22, 0.22), vy: rand(-0.3, 0.05),
+      r: rand(1, 2.6),
+      alpha: rand(0.15, 0.5),
+      color: Math.random() > 0.5 ? BLUE : LBLUE,
+      pulse: rand(0, Math.PI * 2),
+      pulseSpeed: rand(0.01, 0.025)
+    };
+  }
+  for (let i = 0; i < COUNT; i++) particles.push(spawn());
+
+  function drawLine(a, b, dist, maxDist) {
+    const alpha = (1 - dist / maxDist) * 0.16;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.strokeStyle = `rgba(${BLUE},${alpha})`;
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    const maxDist = 120;
+    particles.forEach((p, i) => {
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 100) { p.vx += dx / d * 0.07; p.vy += dy / d * 0.07; }
+      const spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (spd > 1.1) { p.vx *= 0.94; p.vy *= 0.94; }
+      p.x += p.vx; p.y += p.vy;
+      p.pulse += p.pulseSpeed;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      const glow = p.alpha + Math.sin(p.pulse) * 0.1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.color},${glow})`;
+      ctx.fill();
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const ex = p.x - q.x, ey = p.y - q.y;
+        const ed = Math.sqrt(ex*ex + ey*ey);
+        if (ed < maxDist) drawLine(p, q, ed, maxDist);
+      }
+    });
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('resize', resize);
+  const hero = document.getElementById('hero');
+  hero.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+  });
+  hero.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+  resize();
+  loop();
+})();
+
+// ── EMAIL LINK ── (construido en partes para evitar filtros)
+const _e = document.getElementById('email-link');
+if (_e) {
+  const u = ['contacto', 'webzio'].join('');
+  const d = ['gmail', 'com'].join('.');
+  const addr = u + '\u0040' + d;
+  _e.textContent = addr;
+  _e.href = 'mailto:' + addr;
+}
+
+// ── FORM — puro HTML, Formspree maneja el envío ──
+// No se necesita JS para el envío. El form tiene action="https://formspree.io/f/xjgalvzz"
+
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.style.opacity = '1';
+      el.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.service-card, .project-card, .sobre-inne
